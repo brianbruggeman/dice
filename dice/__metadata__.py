@@ -13,7 +13,7 @@ __all__ = (
 # ----------------------------------------------------------------------
 __name__ = 'dice'
 __description__ = 'A DSL for dice notation built in python'
-__version__ = '0.2.0'
+__version__ = '0.3.0'
 
 __author__ = 'Brian Bruggeman'
 __author_email__ = 'brian.m.bruggeman@gmail.com'

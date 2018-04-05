@@ -1,13 +1,12 @@
-# -*- coding: utf-8 -*-
-import os
 import logging
 import random
 from functools import reduce
 from operator import add, mul, sub, truediv as div
+from pathlib import Path
 
 import pandas as pd
 import numpy as np
-from lark import Lark, InlineTransformer
+from lark import Lark
 from lark.tree import Tree
 
 __all__ = ('parse', )
@@ -63,7 +62,9 @@ class DiceParser(Parser):
             data['multiplier'] = 1
         multiplier = data['multiplier']
         die_value = data['die_value']
-        values = pd.DataFrame(np.random.choice(range(1, die_value), [multiplier]), columns=['rolls'])
+        if die_value == 1:
+            die_value += 1
+        values = pd.DataFrame(np.random.choice(range(1, die_value or 2), [multiplier or 1]), columns=['rolls'])
         values['index'] = values.index
         logger.debug(f'   {multiplier}d{die_value} =>  {values.rolls.values}')
         yield values
@@ -139,18 +140,19 @@ class DiceParser(Parser):
 
     def parse(self, formula=None, tree=None):
         if formula:
-            logger.debug('')
             logger.debug(f'{formula}')
-            logger.debug('')
-        # else:
-        #     logger.debug(tree.pretty())
+        else:
+            logger.debug(f'pretty:\n{tree.pretty()}')
         tree = tree or self.ebnf_tokenizer.parse(formula)
         node_name = tree.data
+
+        # lookup node's function
         func = self.__class__.__dict__.get(node_name)
         if not func:
-            err = f'Could not parse node of type "{node_name}"'
-            raise ParseError(err)
-        yield from func(self, tree)
+            raise ParseError(f'Could not parse node of type "{node_name}"')
+
+        data = list(func(self, tree))
+        yield from data
 
     def perc(self, tree):
         yield 100
@@ -199,9 +201,9 @@ def parse(formula, seed=None, grammer=None):
     if seed:
         random.seed(seed)
         np.random.seed(seed)
-    grammer_filepath = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'dice.lark')
     if not grammer:
-        with open(grammer_filepath, 'r') as stream:
+        grammer_filepath = Path(__file__).parent / 'dice.lark'
+        with grammer_filepath.open('r') as stream:
             grammer = stream.read()
     parser = DiceParser(grammer=grammer)
     yield from parser.parse(formula)

@@ -6,8 +6,8 @@ from .parser import parse
 
 
 @click.command()
-@click.option('-c', '--char', is_flag=True)
-@click.option('-s', '--seed')
+@click.option('-c', '--char', is_flag=True, help='Create standard D&D character stats')
+@click.option('-s', '--seed', type=int, help='Random seed value')
 @click.option('-v', '--verbose', count=True)
 @click.argument('formula', required=False, nargs=-1)
 def roll(char, seed, verbose, formula):
@@ -26,6 +26,7 @@ def roll(char, seed, verbose, formula):
     print(f' Formula: {formula}')
     print(f'{linebreak}')
     stats = ['str', 'dex', 'con', 'wis', 'int', 'cha']
+    count = 0
     for count, value in enumerate(parse(formula, seed=seed)):
         summation += value
         if char:
