@@ -59,7 +59,7 @@ The following represents an example usage if using dice's API:
 
 This can be installed directly into a virtual environment using pip:
 
-    pip install git+git://github.com/brianbruggeman/dice.git#egg=dice-dev
+    pip install -e git://github.com/brianbruggeman/dice.git@master#egg=dice
 
 
 
