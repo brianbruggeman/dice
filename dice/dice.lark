@@ -1,0 +1,38 @@
+?expr : iter
+      | smath
+
+?iter : number "x" expr         -> repeat
+      | expr "x" number         -> repeat
+
+?smath : smath "+" smath        -> add
+       | smath "-" smath        -> sub
+       | pmath
+
+?pmath : pmath "*" pmath        -> mul
+       | pmath "/" pmath        -> div
+       | sum
+       | number
+
+?sum  : filter                  -> sum
+
+?filter : filter "M" number     -> max
+        | filter "m" number     -> min
+        | filter "<" number     -> lt
+        | filter "<=" number    -> le
+        | filter ">" number     -> gt
+        | filter ">=" number    -> ge
+        | filter "!=" number    -> ne
+        | filter "==" number    -> eq
+        | dice
+
+?dice : number "d" percentage   -> dice
+      | "d" percentage          -> dice
+
+?percentage : "%"               -> perc
+            | number
+
+number : NUMBER
+
+%import common.NUMBER
+%import common.WS
+%ignore WS

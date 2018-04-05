@@ -1,0 +1,5 @@
+bokeh
+click
+flask
+lark-parser
+pandas
