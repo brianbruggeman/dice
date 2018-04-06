@@ -33,7 +33,7 @@ interface:
 
 ### API
 
-The following represents an example usage if using dice's API:
+The following represents an example usage of using this package's programmatic API:
 
 
     #!/usr/bin/env python3
@@ -63,12 +63,12 @@ This can be installed directly into a virtual environment using pip:
 
 
 
-## Rules
+## Dice Notation Rules
 
 There's a nice [wiki page](https://en.wikipedia.org/wiki/Dice_notation) on dice notation.
 
 The current grammar (in case this document doesn't get updated well) can be found
-under dice/dice.lark.
+under [dice/dice.lark](dice/dice.lark).
 
 ### Math
 
@@ -77,6 +77,7 @@ Basic math operations are as follows
 | Rule     | Notation | Example | Description                                               |
 |----------|----------|---------|-----------------------------------------------------------|
 | dice     | d        | 3d6     | Rolls a dice (e.g. 6) a specific number of times (e.g. 3) |
+| percent  | d%       | d%      | Rolls a 100-sided die                                     |
 | plus     | +        | 1 + 2   | Simple add                                                |
 | minus    | -        | 1 - 2   | Simple subtraction                                        |
 | multiply | *        | 1 * 2   | Simple multiplication                                     |
@@ -106,3 +107,20 @@ Finally, there are ways of controlling output
 | Rule       | Notation | Example | Description                                                             |
 |------------|----------|---------|-------------------------------------------------------------------------|
 | iteration  | x        | 6x4d6M3 | Repeat the formula multiple times (e.g. create 6 values using 4d6M3 )   |
+
+
+## Testing
+
+This package uses [pytest](https://github.com/pytest-dev/pytest).
+
+### Testing Setup
+
+To setup, simply clone the repo and run:
+
+    pip install -e .[test]
+    
+### Running tests
+
+To run the tests, at the top of the repo run:
+
+    pytest
